@@ -27,9 +27,13 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-solarized-dark)
 
+;; FIXME this doesn't load on start, need to run doom/reload
+(set-face-foreground 'font-lock-variable-name-face "default")
+
 ;; quoted expressions should also be orange
 (add-hook 'racket-mode-hook (lambda () (set-face-foreground 'racket-keyword-argument-face "#b58900")))
-(set-face-foreground 'font-lock-variable-name-face "default")
+
+;; (set-background-color "#35446f")
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -64,17 +68,26 @@
 (add-hook 'racket-repl-mode-hook
           (lambda () (define-key racket-repl-mode-map (kbd "\C-w") nil)))
 
-(setq tuareg-highlight-all-operators t)
+(setq tuareg-highlight-all-operators 1)
 ;; this doesn't work :sad-face:
 (add-hook 'tuareg-mode-hook #'(lambda () (setq mode-name "🐫")))
 
 ;; (setq doom-modeline-icon (display-graphic-p))
-(setq doom-modeline-major-mode-icon t)
+;; (setq doom-modeline-major-mode-icon t)
 
 (face-spec-set
  'tuareg-font-lock-constructor-face
  '((((class color) (background light)) (:foreground "SaddleBrown"))
-   (((class color) (background dark)) (:foreground "#8fbcbb"))))
+   (((class color) (background dark)) (:foreground "#859900"))))
 
 (add-hook 'racket-mode-hook      #'racket-unicode-input-method-enable)
 (add-hook 'racket-repl-mode-hook #'racket-unicode-input-method-enable)
+
+;; produce message containing the face for the text under the cursor
+(defun what-face (pos)
+  (interactive "d")
+  (hl-line-mode -1)
+  (let ((face (or (get-char-property (point) 'read-face-name)
+                  (get-char-property (point) 'face))))
+    (hl-line-mode +1)
+    (if face (message "Face: %s" face) (message "No face at %d" pos))))

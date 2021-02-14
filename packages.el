@@ -50,3 +50,4 @@
 ;(unpin! t)
 
 (package! nord-emacs :recipe (:host github :repo "arcticicestudio/nord-emacs"))
+(package! zerodark-emacs :recipe (:host github :repo "NicolasPetton/zerodark-theme"))
