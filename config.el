@@ -27,6 +27,10 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-solarized-dark)
 
+;; quoted expressions should also be orange
+(add-hook 'racket-mode-hook (lambda () (set-face-foreground 'racket-keyword-argument-face "#b58900")))
+(set-face-foreground 'font-lock-variable-name-face "default")
+
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
@@ -59,3 +63,18 @@
 
 (add-hook 'racket-repl-mode-hook
           (lambda () (define-key racket-repl-mode-map (kbd "\C-w") nil)))
+
+(setq tuareg-highlight-all-operators t)
+;; this doesn't work :sad-face:
+(add-hook 'tuareg-mode-hook #'(lambda () (setq mode-name "🐫")))
+
+;; (setq doom-modeline-icon (display-graphic-p))
+(setq doom-modeline-major-mode-icon t)
+
+(face-spec-set
+ 'tuareg-font-lock-constructor-face
+ '((((class color) (background light)) (:foreground "SaddleBrown"))
+   (((class color) (background dark)) (:foreground "#8fbcbb"))))
+
+(add-hook 'racket-mode-hook      #'racket-unicode-input-method-enable)
+(add-hook 'racket-repl-mode-hook #'racket-unicode-input-method-enable)
