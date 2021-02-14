@@ -25,13 +25,18 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-solarized-dark)
+(setq current-theme 'nord)
+
+(setq doom-theme current-theme)
+;; FIXME doesn't work
+(when (eq current-theme 'doom-solarized-dark)
+  (add-hook 'racket-mode-hook (lambda () (set-face-foreground 'racket-keyword-argument-face "#b58900"))))
 
 ;; FIXME this doesn't load on start, need to run doom/reload
+;; quoted expressions should also be orange
 (set-face-foreground 'font-lock-variable-name-face "default")
 
-;; quoted expressions should also be orange
-(add-hook 'racket-mode-hook (lambda () (set-face-foreground 'racket-keyword-argument-face "#b58900")))
+;; (add-hook 'racket-mode-hook (lambda () (set-face-foreground 'racket-keyword-argument-face "#b58900")))
 
 ;; (set-background-color "#35446f")
 
