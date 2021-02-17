@@ -25,12 +25,13 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq current-theme 'nord)
+(setq current-theme 'doom-solarized-dark) ;; want to use nord but it sucks for racket rn
 
 (setq doom-theme current-theme)
+(add-hook 'racket-mode-hook (lambda () (set-face-foreground 'racket-keyword-argument-face "#b58900")))
 ;; FIXME doesn't work
-(when (eq current-theme 'doom-solarized-dark)
-  (add-hook 'racket-mode-hook (lambda () (set-face-foreground 'racket-keyword-argument-face "#b58900"))))
+;; (when (eq current-theme 'doom-solarized-dark)
+;;   (add-hook 'racket-mode-hook (lambda () (set-face-foreground 'racket-keyword-argument-face "#b58900"))))
 
 ;; FIXME this doesn't load on start, need to run doom/reload
 ;; quoted expressions should also be orange
@@ -73,6 +74,8 @@
 (add-hook 'racket-repl-mode-hook
           (lambda () (define-key racket-repl-mode-map (kbd "\C-w") nil)))
 
+(add-hook 'racket-mode-hook (lambda () (setq racket-smart-open-bracket-mode nil)))
+
 (setq tuareg-highlight-all-operators 1)
 ;; this doesn't work :sad-face:
 (add-hook 'tuareg-mode-hook #'(lambda () (setq mode-name "🐫")))
@@ -80,10 +83,10 @@
 ;; (setq doom-modeline-icon (display-graphic-p))
 ;; (setq doom-modeline-major-mode-icon t)
 
-(face-spec-set
- 'tuareg-font-lock-constructor-face
- '((((class color) (background light)) (:foreground "SaddleBrown"))
-   (((class color) (background dark)) (:foreground "#859900"))))
+;; (face-spec-set
+;;  'tuareg-font-lock-constructor-face
+;;  '((((class color) (background light)) (:foreground "SaddleBrown"))
+;;    (((class color) (background dark)) (:foreground "#859900"))))
 
 (add-hook 'racket-mode-hook      #'racket-unicode-input-method-enable)
 (add-hook 'racket-repl-mode-hook #'racket-unicode-input-method-enable)
