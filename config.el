@@ -6,7 +6,7 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
-(setq user-full-name "Mitch Gamburg"
+(setq user-full-name    "Mitch Gamburg"
       user-mail-address "mitch.gamburg@gmail.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
@@ -25,9 +25,9 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq current-theme 'doom-solarized-dark) ;; want to use nord but it sucks for racket rn
+;; (setq current-theme 'doom-solarized-dark) ;; want to use nord but it sucks for racket rn
 
-(setq doom-theme current-theme)
+(setq doom-theme 'doom-solarized-dark)
 (add-hook 'racket-mode-hook (lambda () (set-face-foreground 'racket-keyword-argument-face "#b58900")))
 ;; FIXME doesn't work
 ;; (when (eq current-theme 'doom-solarized-dark)
@@ -37,7 +37,7 @@
 ;; quoted expressions should also be orange
 (set-face-foreground 'font-lock-variable-name-face "default")
 
-;; (add-hook 'racket-mode-hook (lambda () (set-face-foreground 'racket-keyword-argument-face "#b58900")))
+(add-hook 'racket-mode-hook (lambda () (set-face-foreground 'racket-keyword-argument-face "#b58900")))
 
 ;; (set-background-color "#35446f")
 
@@ -76,9 +76,9 @@
 
 (add-hook 'racket-mode-hook (lambda () (setq racket-smart-open-bracket-mode nil)))
 
-(setq tuareg-highlight-all-operators 1)
+;; (setq tuareg-highlight-all-operators 1)
 ;; this doesn't work :sad-face:
-(add-hook 'tuareg-mode-hook #'(lambda () (setq mode-name "🐫")))
+;; (add-hook 'tuareg-mode-hook #'(lambda () (setq mode-name "🐫")))
 
 ;; (setq doom-modeline-icon (display-graphic-p))
 ;; (setq doom-modeline-major-mode-icon t)
@@ -99,3 +99,69 @@
                   (get-char-property (point) 'face))))
     (hl-line-mode +1)
     (if face (message "Face: %s" face) (message "No face at %d" pos))))
+
+(defun create-typed-egg ()
+  (interactive)
+  (let ((fname (read-string "Egg file name: ")))
+    (shell-command (concat "touch " fname ".egg"))
+    (shell-command (concat "touch " fname ".out"))
+    (shell-command (concat "touch " fname ".options"))
+    (shell-command (concat "echo check >" fname ".options"))
+    (find-file (concat fname ".egg"))
+    (split-window-right)
+    (other-window 1)
+    (find-file (concat fname ".out"))
+    (other-window 1)))
+
+(defun create-egg ()
+  (interactive)
+  (let ((fname (read-string "Egg file name: ")))
+    (shell-command (concat "touch " fname ".egg"))
+    (shell-command (concat "touch " fname ".out"))
+    (find-file (concat fname ".egg"))
+    (split-window-right)
+    (other-window 1)
+    (find-file (concat fname ".out"))
+    (other-window 1)))
+
+(defun create-typed-err-egg ()
+  (interactive)
+  (let ((fname (read-string "Egg file name: ")))
+    (shell-command (concat "touch " fname ".egg"))
+    (shell-command (concat "touch " fname ".err"))
+    (shell-command (concat "touch " fname ".options"))
+    (shell-command (concat "echo check >" fname ".options"))
+    (find-file (concat fname ".egg"))
+    (split-window-right)
+    (other-window 1)
+    (find-file (concat fname ".err"))
+    (other-window 1)))
+
+(defun create-err-egg ()
+  (interactive)
+  (let ((fname (read-string "Egg file name: ")))
+    (shell-command (concat "touch " fname ".egg"))
+    (shell-command (concat "touch " fname ".err"))
+    (find-file (concat fname ".egg"))
+    (split-window-right)
+    (other-window 1)
+    (find-file (concat fname ".err"))
+    (other-window 1)))
+
+;; (defun abstract-create-egg (typed? err?)
+;;   (lambda ()
+;;     (interactive)
+;;     (let ((test-name (read-string "Egg file name: ")))
+;;       (let ((fname (concat test-name ".egg"))
+;;             (output-fname (concat test-name (if err? ".err" ".out")))
+;;             (opts-fname (concat test-name ".options")))
+;;         (shell-command (concat "touch " fname))
+;;         (shell-command (concat "touch" output-fname))
+;;         (when typed? (shell-command (concat "echo check >" opts-fname)))
+;;         (find-file fname)
+;;         (split-window-right)
+;;         (other-window 1)
+;;         (find-file output-fname)
+;;         (other-window 1)))))
+
+(setq flycheck-global-modes '(not racket-mode racket-repl-mode))
